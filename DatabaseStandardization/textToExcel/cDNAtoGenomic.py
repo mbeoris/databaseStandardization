@@ -5,7 +5,7 @@ Created on Dec 5, 2013
 
 goal of module to convert DNA change position from cDNA to genomic position
 '''
-
+#
 #this is the dictionary for the genomic positions of BRCA1's cds
 #key = genomic position of first nucleotide in the exon
 #value = range of nucleotides for an exon *note that the exon ranges vary between USCS and genbank
