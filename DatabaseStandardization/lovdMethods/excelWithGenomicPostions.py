@@ -49,6 +49,6 @@ def excelWithGenomicPositions(inputFile, outputFile, columnWithcDNAPos, parentDi
     fout.close()
 
 #excelWithGenomicPositions("test.csv", "testB.csv", " BIC DNA change", brcaOne, 17, -1)
-#excelWithGenomicPositions("LOVD_BRCA1_12.2.13.csv", "LOVD_BRCA1_12.2.13B.csv", "BIC DNA change", brcaOne, 17, -1)
+excelWithGenomicPositions("LOVD_BRCA1_12.2.13.csv", "LOVD_BRCA1_12.2.13B.csv", "BIC DNA change", brcaOne, 17, -1)
 
 excelWithGenomicPositions("LOVD_BRCA2_12.10.13.csv", "LOVD_BRCA2_12.10.13B.csv", "BIC DNA change", brca2_dict, 13)

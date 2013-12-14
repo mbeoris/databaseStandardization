@@ -45,10 +45,9 @@ def modifyRawText(inputFile, outputExcel, posCol):
                 text_tokens[DNAchangeIndex] = oldForm[0:-3]
         
         text_tokens = str(text_tokens)
-        newLine = text_tokens.replace("'", "").replace('[','').replace(']', '')
-        newLine = newLine + ' \n'
+        newLine = text_tokens.replace("'", "").replace('[','').replace(']', '').replace('\n', '')
         newExcel.write(newLine)
-  
+        newExcel.write('\n')
 
     rawText.close()
     newExcel.close()

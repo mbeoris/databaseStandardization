@@ -9,10 +9,12 @@ Created on Dec 10, 2013
 #that can be used to translate a cDNA position to a genomic
 #position, *note change strandOrientation to -1 if reverse strand
 
+#should have a start index parameter that indicates whether the reported
+#placement in the table is the same as the refgene or -1
+
 def dictionaryCreation(filein, strandOrientation = 1):
     fin = open (filein, 'rU')
     translateDict = {}
-    
     
     exonStart = 1
     for line in fin: 
@@ -33,7 +35,6 @@ def dictionaryCreation(filein, strandOrientation = 1):
     return translateDict
 
     
-#dictionaryCreation('test.txt') 
 
 #note that brca2 reference values are off by one nucleotide, so this function
 #works well for this table, Need to implement start 0 or start 1 in function
