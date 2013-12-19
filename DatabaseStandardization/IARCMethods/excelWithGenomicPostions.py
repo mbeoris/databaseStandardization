@@ -37,6 +37,10 @@ def excelWithGenomicPositions(inputFile, outputFile, columnWithcDNAPos, parentDi
                 ref = ref.complement()
                 ref = str(ref)
                 text_tokens[startCol+2] = ref
+                var = Seq(text_tokens[startCol+3])
+                var = var.complement()
+                var = str(var)
+                text_tokens[startCol+3] = var
 
         text_tokens = str(text_tokens[startCol-1:startCol+4]) + "," + str(text_tokens[startCol+6:startCol+9])
         print text_tokens
