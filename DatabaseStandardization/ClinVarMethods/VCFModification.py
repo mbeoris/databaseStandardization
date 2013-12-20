@@ -81,7 +81,7 @@ def VCF_Modification(inputfile,newfile):
             fout.write(line)
             
 
-    print "brca1count=", brca1count, '\n', "brca2count=", brca2count
+    #print "brca1count=", brca1count, '\n', "brca2count=", brca2count
     fin.close()
     fout.close()
     

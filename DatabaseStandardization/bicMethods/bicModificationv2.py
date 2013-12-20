@@ -10,6 +10,9 @@ Created on Dec 13, 2013
 ##acquire nt information
 
 
+##NEED TO TEST AND MODIFY FOR POSITIVE STRAND
+##should probably have input variable of where the gene starts 
+
 from cDNAtoGenomic import get_key_from_value
 from cDNAtoGenomic import cDNA_to_genomic
 from cDNAtoGenomic import brcaOne
@@ -38,6 +41,7 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
     fnew.write('\n')
 
     for line in fin:
+        #print line
         exon = 'exon'
         line = line.replace(',', '.')
         text_tokens = line.split('\t')
@@ -70,20 +74,14 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                     text_tokens[2] = genomicPos
                 else:
                     continue
+            
             ntchange = text_tokens[4]
             
-            if 'ins' in ntchange and 'del' in ntchange:
-                '''insPos = 0
-                ntchange = str(ntchange).replace(" ",'')
-                for i in range(0, len(ntchange)):
-                    if ntchange[i:i+3] == "ins":
-                        insPos = i
-                delnt = ntchange[3:insPos]
-                insnt = ntchange[insPos+3:]
-                var = seqname[((int(text_tokens[2])- 41277486)*strand)-2]
-                ref = var + str(delnt)
-                var = var + str(insnt)'''
+            if ('ins' in ntchange and 'del' in ntchange) or ('to' in ntchange and ('del' in ntchange or 'ins' in ntchange)):
                 continue
+            
+            if 'dup' in ntchange:
+                ntchange = ntchange.replace('dup', 'ins')
             
             if 'to' in ntchange:
                 if len(ntchange) > 6:
@@ -105,39 +103,51 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                 hasNumber = 'false'
                 for i in range(0, len(ntchange)):
                     if ntchange[i].isdigit():
-                        hasNumber = 'true'            
-                        lastDig = i
-
-                if hasNumber == 'false':
+                        hasNumber = 'true'
+                        lastDig = i            
+                if strand >0:
                     nt = str(ntchange)
-                    nt = nt.replace('del ','')
+                    nt = nt.replace('del ','').replace(" ", "")
                     var = seqname[((int(text_tokens[2])- 41277486)*strand)-2]
                     ref = var + nt
+                    start = int(text_tokens[2])
+                    end = start + (strand * 1)
                 else:
-                    nt = int(nt[0:lastDig-3])
-                    var = seqname[((int(text_tokens[2])- 41277486)*strand)-2]
-                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)-2-(nt):(((int(text_tokens[2])- 41277486)*strand)-2)+1]
-                start = int(text_tokens[2])
-                end = start + (strand * 1)             
+                    nt = str(ntchange)
+                    nt = nt.replace('del ','').replace(" ", "")
+                    if hasNumber == "false":
+                        var = seqname[((int(text_tokens[2])- 41277486)*strand) + len(nt)]
+                        ref = nt + var
+                        start = int(text_tokens[2] - len(nt))
+                        end = start + 1 
+                    else:
+                        nt = int(nt[0:lastDig-3])
+                        var = seqname[((int(text_tokens[2])- 41277486)*strand) + nt]
+                        ref = seqname[((int(text_tokens[2])- 41277486)*strand):((int(text_tokens[2])- 41277486)*strand) + nt] + var
+                        start = int(text_tokens[2] - nt)
+                        end = start+1
+                    
+
+                                 
 
             elif 'ins' in ntchange:
                 hasNumber = 'false'
                 for i in range(0, len(ntchange)):
                     if ntchange[i].isdigit():
                         hasNumber = 'true'
-                print nt
-                if hasNumber == 'false': 
-                    nt = str(ntchange)
-                    nt = nt.replace('ins', '')
-                    nt = nt.replace(' ','')
+                #we will not know what is being inserted, so we'll pass over this condition
+                if hasNumber == 'true':
+                    continue
+                nt = str(ntchange)
+                nt = nt.replace('ins', '').replace(' ','')
+                if strand > 0:
                     ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
                     var = ref + nt
-               '''else:
-                    nt = int(nt)
-                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
-                    var = seqname[((int(text_tokens[2])- 41277486)*strand)-1:((int(text_tokens[2])- 41277486)*strand)-1 +nt]'''
-                
-                start = end = int(text_tokens[2])
+                    start = end = int(text_tokens[2])
+                else:
+                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)+1]
+                    var = nt + ref
+                    start = end = int(text_tokens[2]-1)
 
             if strand < 0:
                 ref = Seq(str(ref))
@@ -145,7 +155,7 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                 var = Seq(str(var))
                 var = var.reverse_complement()
                 
-            newLine = str(chromosome) + ',' + str(start) + ',' + str(end) + ',' + str(ref).replace(" ",'') + ',' + str(var).replace(" ",'') \
+            newLine = str(chromosome) + ',' + str(start).upper() + ',' + str(end).upper() + ',' + str(ref).replace(" ",'') + ',' + str(var).replace(" ",'') \
              +','+ str(text_tokens[13]).upper() +','+ str(text_tokens[26]) + ',' + exon
             fnew.write(newLine)
             fnew.write('\n')
@@ -155,5 +165,3 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
 
 
 bicModification('brca1_data.txt', 'brca1_data.csv', 17, brcaOne, brca1seq, 5711, -1)
-#bicModification('testBRCA1_bic.txt', 'testBRCA1_bicCSV.csv', 17, brcaOne,brca1seq,5711, -1)
-#bicModification('testBRCA1B.txt', 'testBRCA1Bi.csv', 17, brcaOne, brca1seq, 5711, -1)
