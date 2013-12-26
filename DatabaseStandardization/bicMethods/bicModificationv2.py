@@ -3,6 +3,9 @@ Created on Dec 13, 2013
 
 @author: mbeoris
 '''
+#v2.1
+
+
 #goal of script is to modify BIC database file to simplify
 #and standardize
 ##ONE MAJOR PROBLEM, does not include references nt for insertions and
@@ -13,9 +16,12 @@ Created on Dec 13, 2013
 ##NEED TO TEST AND MODIFY FOR POSITIVE STRAND
 ##should probably have input variable of where the gene starts 
 
+##for deletions, start position is the nt before deleted region
+
 from cDNAtoGenomic import get_key_from_value
 from cDNAtoGenomic import cDNA_to_genomic
-from cDNAtoGenomic import brcaOne
+from cDNAtoGenomic import brca1Dict
+from dictionaryCreation import dictionaryCreation
 from Bio.Seq import Seq
 
 
@@ -30,18 +36,18 @@ def get_extended_gene_region(filein):
     fin.close()
     return seqname
 
+
 brca1seq = get_extended_gene_region("BRCA1_extended.txt")
+brca2seq = get_extended_gene_region("BRCA2_extended.txt")
+brca2Dict = dictionaryCreation('BRCA2_Bed.txt', 2)
 
-
-
-def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, codingRegLen, strand=1):
+def bicModification(inputfile, outputfile, chromosome, parentDict, seqname, codingRegLen, genomicStart, strand=1):
     fin = open(inputfile, 'rU')
     fnew = open(outputfile, 'w')
     fnew.write('chr , start, end, ref, var, clinsig, references, exon/intron, occurrence of mutation')
     fnew.write('\n')
 
     for line in fin:
-        #print line
         exon = 'exon'
         line = line.replace(',', '.')
         text_tokens = line.split('\t')
@@ -105,27 +111,35 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                     if ntchange[i].isdigit():
                         hasNumber = 'true'
                         lastDig = i            
+                nt = str(ntchange)
+                nt = nt.replace('del ','').replace(" ", "")
                 if strand >0:
-                    nt = str(ntchange)
-                    nt = nt.replace('del ','').replace(" ", "")
-                    var = seqname[((int(text_tokens[2])- 41277486)*strand)-2]
-                    ref = var + nt
-                    start = int(text_tokens[2])
-                    end = start + (strand * 1)
+                    if hasNumber == "false":
+                        var = seqname[((int(text_tokens[2])-1)-genomicStart)]
+                        ref = var + nt
+                        start = int(text_tokens[2])-1
+                        end = start + len(nt)
+                    else: 
+                        nt = int(nt[0:lastDig-3])
+                        var = seqname[((int(text_tokens[2])-1) - genomicStart)]
+                        ref = var + seqname[((int(text_tokens[2])- genomicStart)):(int(text_tokens[2])- genomicStart) + nt]
+                        start = int(text_tokens[2])-1
+                        end = start + int(nt)
+                    
                 else:
                     nt = str(ntchange)
                     nt = nt.replace('del ','').replace(" ", "")
                     if hasNumber == "false":
-                        var = seqname[((int(text_tokens[2])- 41277486)*strand) + len(nt)]
+                        var = seqname[((int(text_tokens[2])- genomicStart)*strand) + len(nt)]
                         ref = nt + var
-                        start = int(text_tokens[2] - len(nt))
-                        end = start + 1 
+                        start = int(text_tokens[2]-len(nt))
+                        end = start + len(nt)
                     else:
                         nt = int(nt[0:lastDig-3])
-                        var = seqname[((int(text_tokens[2])- 41277486)*strand) + nt]
-                        ref = seqname[((int(text_tokens[2])- 41277486)*strand):((int(text_tokens[2])- 41277486)*strand) + nt] + var
-                        start = int(text_tokens[2] - nt)
-                        end = start+1
+                        var = seqname[((int(text_tokens[2])- genomicStart)*strand) + nt]
+                        ref = seqname[((int(text_tokens[2])- genomicStart)*strand):((int(text_tokens[2])- 41277486)*strand) + nt] + var
+                        start = int(text_tokens[2]-nt)
+                        end = start + int(nt)
                     
 
                                  
@@ -141,13 +155,14 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                 nt = str(ntchange)
                 nt = nt.replace('ins', '').replace(' ','')
                 if strand > 0:
-                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
+                    ref = seqname[(int(text_tokens[2])- genomicStart)]
                     var = ref + nt
                     start = end = int(text_tokens[2])
                 else:
-                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)+1]
+                    ref = seqname[((int(text_tokens[2])- genomicStart)*strand)+1]
                     var = nt + ref
                     start = end = int(text_tokens[2]-1)
+                    
 
             if strand < 0:
                 ref = Seq(str(ref))
@@ -163,5 +178,5 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
     fnew.close()
             
 
-
-bicModification('brca1_data.txt', 'brca1_data.csv', 17, brcaOne, brca1seq, 5711, -1)
+bicModification('brca2_data.txt', 'brca2_data.csv', 13, brca2Dict, brca2seq, 10987,32889517)
+bicModification('brca1_data.txt', 'brca1_data.csv', 17, brca1Dict, brca1seq, 5711,41277486, -1)

@@ -42,4 +42,4 @@ def count_and_remove_duplicates(infile, outfile):
 
 
 count_and_remove_duplicates('brca1_data.csv', 'brca1_dataB.csv')
-    
+count_and_remove_duplicates('brca2_data.csv', 'brca2_dataB.csv')  

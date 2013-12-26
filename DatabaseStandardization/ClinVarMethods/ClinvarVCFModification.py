@@ -61,7 +61,7 @@ def ClinvarVCF_Modification(inputfile,newfile):
             if len(ref) == 1 and (len(var) == 1 or 'or' in var) or len(ref) <= len(var):
                 text_tokens.insert(2, (text_tokens[1]))
             if len(ref) > len(var) and ('or' not in var):
-                text_tokens.insert(2, (int(text_tokens[1]) +1))
+                text_tokens.insert(2, (int(text_tokens[1]) +len(ref)-1))
         
             
             text_tokens.remove(text_tokens[3])
@@ -105,7 +105,6 @@ def ClinvarVCF_Modification(inputfile,newfile):
                             line2[orIndex] = multOr2
                 
                   
-                fout.write('\n')
                 line2.append("1")
                 line2 = str(line2).replace('[','').replace(']', '').replace("'", "").replace(",", "\t")                                            
                 fout.write(line2)                   

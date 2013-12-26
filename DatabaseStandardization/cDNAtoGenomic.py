@@ -12,7 +12,7 @@ goal of module to convert DNA change position from cDNA to genomic position
 
 
 #note changed the first key to (41277386+1), I think the indexing was off by one
-brcaOne = {41277387 :    range(1,100+1),     41276132   :   range(101,199+1),      41267796 :    range(200,253+1), 
+brca1Dict = {41277387 :    range(1,100+1),     41276132   :   range(101,199+1),      41267796 :    range(200,253+1), 
            41258550 :    range(254,331+1),   41256973   :   range(332,420+1),      41256278 :    range(421,560+1), 
            41251897 :    range(561,666+1),   41249306   :   range(667,712+1),      41247939 :    range(713,789+1), 
            41246877 :    range(790,4215+1),  41243049   :   range(4216,4304+1),    41234592 :    range(4305,4476+1), 
