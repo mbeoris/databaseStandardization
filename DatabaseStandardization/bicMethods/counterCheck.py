@@ -25,7 +25,7 @@ def count_and_remove_duplicates(infile, outfile):
     
     
     with open(outfile,'w') as out_file:
-        out_file.write('chr , start, end, ref, var, clinsig, references, exon/intron, occurrence of mutation')
+        out_file.write('chr \t start \t end\t ref\t var\t clinsig\t references\t exon/intron \t occurrence of mutation')
         out_file.write('\n')
         seen = set() # set for fast O(1) amortized lookup
         
@@ -34,12 +34,12 @@ def count_and_remove_duplicates(infile, outfile):
             if impKey in seen: 
                 continue # skip duplicate
             seen.add(impKey)
-            row = (str(row)).replace(']', '').replace('[','').replace("'",'')
-            row = row + ', ' + str(counterDict[impKey])
+            row = (str(row)).replace(']', '').replace('[','').replace("'",'').replace(',', '\t')
+            row = row + '\t ' + str(counterDict[impKey])
             out_file.write(row)
             out_file.write('\n')
             
 
 
-count_and_remove_duplicates('brca1_data.csv', 'brca1_dataB.csv')
-count_and_remove_duplicates('brca2_data.csv', 'brca2_dataB.csv')  
+count_and_remove_duplicates('brca1_data.csv', 'brca1_dataB.vcf')
+count_and_remove_duplicates('brca2_data.csv', 'brca2_dataB.vcf')  

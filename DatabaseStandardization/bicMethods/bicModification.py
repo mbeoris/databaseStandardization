@@ -132,10 +132,10 @@ def bicModification(inputfile, outputfile, chromosome , parentDict, seqname, cod
                     nt = nt.replace(' ','')
                     ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
                     var = ref + nt
-               '''else:
-                    nt = int(nt)
-                    ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
-                    var = seqname[((int(text_tokens[2])- 41277486)*strand)-1:((int(text_tokens[2])- 41277486)*strand)-1 +nt]'''
+               #'''else:
+                #    nt = int(nt)
+                #   ref = seqname[((int(text_tokens[2])- 41277486)*strand)-1]
+                #   var = seqname[((int(text_tokens[2])- 41277486)*strand)-1:((int(text_tokens[2])- 41277486)*strand)-1 +nt]'''
                 
                 start = end = int(text_tokens[2])
 
