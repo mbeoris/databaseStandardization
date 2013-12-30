@@ -107,9 +107,6 @@ def indel_varscan_modification(inputfile, newfile):
             fout.write(line)
             fout.write('\n')
                         
-            
-                
-            
 
     fin.close()
     fout.close()
