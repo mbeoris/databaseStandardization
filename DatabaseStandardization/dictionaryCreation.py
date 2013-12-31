@@ -4,13 +4,21 @@ Created on Dec 10, 2013
 @author: mbeoris
 '''
 
+#v2
 
-#the method below creates a dictionary from a BED file
-#that can be used to translate a cDNA position to a genomic
-#position, *note change strandOrientation to -1 if reverse strand
+#the method below creates a dictionary from a BED file that 
+#can be used to translate a cDNA position to a genomic position
 
-#should have a start index parameter that indicates whether the reported
-#placement in the table is the same as the refgene or -1
+#filein:
+#will be the BED file that reports the exon ranges
+
+#startSite: 
+#if the reported c.DNA is +1 from what is should be startSite=2
+#if reported c.DNA is correctly  labeled startSite=1
+#if the reported c.DNA is -1 from where it should be startSite=1
+
+#strandOrientation: 
+#set this =-1 if reverse strand alignment
 
 def dictionaryCreation(filein, startSite, strandOrientation = 1):
     fin = open (filein, 'rU')
@@ -29,16 +37,16 @@ def dictionaryCreation(filein, startSite, strandOrientation = 1):
         translateDict[int(tmp1)+1] = range(exonStart, exonStart+valueRange)
         exonStart += valueRange
         
-    keys =  translateDict.keys() 
-    len(keys)
     fin.close()
     return translateDict
 
     
 
 #note that brca2 reference values are off by one nucleotide, so this function
-#works well for this table, Need to implement start 0 or start 1 in function
-#brca2 example: nt reported 281, actual nt 280
-brca2_dict = dictionaryCreation('BRCA2_Bed.txt',1)
+#works well for this table, Need to implement startsite (0,1,2,etc.) in function
+#brca2 example: nt reported 281, actual nt 280 
+#this is possibly caused by wrong reference reported on IARC database (HSU gene, not NM)
+
+brca2_dictIARC = dictionaryCreation('BRCA2_Bed.txt', 2)
 
 

@@ -13,7 +13,7 @@ correct position came from BIC change column, not DNA change column
 then creates two new columns labeled "Old nt" and "New nt"
 
 '''
-print "modifyRawText v.1"
+#print "modifyRawText v.1"
 #inputFile raw text from site, outputExcel desired name for excel file
 
 def modifyRawText(inputFile, outputExcel, posCol):
@@ -53,7 +53,7 @@ def modifyRawText(inputFile, outputExcel, posCol):
     newExcel.close()
 
 
-modifyRawText("LOVD_BRCA1_12.2.13.txt", "LOVD_BRCA1_12.2.13.csv", "BIC DNA change")
-
-modifyRawText("LOVD_BRCA2_12.10.13.txt", "LOVD_BRCA2_12.10.13.csv", "BIC DNA change")
+#note that BRCA2 indices are shifted by one position (ex: c.281 is actually c.280)
+#modifyRawText("LOVD_BRCA1_12.2.13.txt", "LOVD_BRCA1_12.2.13.csv", "BIC DNA change")
+#modifyRawText("LOVD_BRCA2_12.10.13.txt", "LOVD_BRCA2_12.10.13.csv", "BIC DNA change")
 

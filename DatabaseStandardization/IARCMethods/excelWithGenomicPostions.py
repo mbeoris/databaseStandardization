@@ -6,8 +6,8 @@ Created on Dec 5, 2013
 
 from cDNAtoGenomic import cDNA_to_genomic
 from cDNAtoGenomic import get_key_from_value
-from cDNAtoGenomic import brca1Dict
-from dictionaryCreation import brca2_dict
+#from cDNAtoGenomic import brca1Dict
+#from dictionaryCreation import brca2_dictIARC
 from Bio.Seq import Seq
 
 
@@ -43,16 +43,12 @@ def excelWithGenomicPositions(inputFile, outputFile, columnWithcDNAPos, parentDi
                 text_tokens[startCol+3] = var
 
         text_tokens = str(text_tokens[startCol-1:startCol+4]) + "," + str(text_tokens[startCol+6:startCol+9])
-        print text_tokens
-        newLine = text_tokens.replace('[','').replace(']', '').replace("'", "")
+        newLine = text_tokens.replace('[','').replace(']', '').replace("'", "").replace(',', '\t')
         newLine = newLine + ' \n'
         fout.write(newLine)  
-        
-    
     fin.close()
     fout.close()
 
-#excelWithGenomicPositions("test.csv", "testB.csv", " BIC DNA change", brcaOne, 17, -1)
-excelWithGenomicPositions("LOVD_BRCA1_12.2.13.csv", "LOVD_BRCA1_12.2.13B.csv", "BIC DNA change", brca1Dict, 17, -1)
 
-excelWithGenomicPositions("LOVD_BRCA2_12.10.13.csv", "LOVD_BRCA2_12.10.13B.csv", "BIC DNA change", brca2_dict, 13)
+#excelWithGenomicPositions("LOVD_BRCA1_12.2.13.csv", "LOVD_BRCA1_12.2.13B.vcf", "BIC DNA change", brca1Dict, 17, -1)
+#excelWithGenomicPositions("LOVD_BRCA2_12.10.13.csv", "LOVD_BRCA2_12.10.13B.vcf", "BIC DNA change", brca2_dictIARC, 13)

@@ -114,7 +114,6 @@ def ClinvarVCF_Modification(inputfile,newfile):
             else:
                 text_tokens[9] = "0"
                 text_tokens = str(text_tokens [0:10])
-                #print text_tokens
                 text_tokens = text_tokens.replace('[','').replace(']', '').replace("'", "").replace(",", "\t")
                 text_tokens = text_tokens.replace(' or ', ',').replace( ".,", '')
                 fout.write(text_tokens)

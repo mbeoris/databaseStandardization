@@ -3,24 +3,20 @@ Created on Dec 13, 2013
 
 @author: mbeoris
 '''
-#v2.1
+#v2.2
 
 
 #goal of script is to modify BIC database file to simplify
 #and standardize
 ##ONE MAJOR PROBLEM, does not include references nt for insertions and
 ##deletions, planning on using seqname information (BRCA1 U14680) to 
-##acquire nt information
+##acquire nt information, need extended gene to retrieve nts within introns
 
-
-##NEED TO TEST AND MODIFY FOR POSITIVE STRAND
-##should probably have input variable of where the gene starts 
-
-##for deletions, start position is the nt before deleted region
+##for deletions, start position is the nt before deleted region?
 
 from cDNAtoGenomic import get_key_from_value
 from cDNAtoGenomic import cDNA_to_genomic
-from cDNAtoGenomic import brca1Dict
+#from cDNAtoGenomic import brca1Dict
 from dictionaryCreation import dictionaryCreation
 from Bio.Seq import Seq
 
@@ -178,5 +174,5 @@ def bicModification(inputfile, outputfile, chromosome, parentDict, seqname, codi
     fnew.close()
             
 
-bicModification('brca2_data.txt', 'brca2_data.csv', 13, brca2Dict, brca2seq, 10987,32889517)
-bicModification('brca1_data.txt', 'brca1_data.csv', 17, brca1Dict, brca1seq, 5711,41277486, -1)
+#bicModification('brca2_data.txt', 'brca2_data.csv', 13, brca2Dict, brca2seq, 10987,32889517)
+#bicModification('brca1_data.txt', 'brca1_data.csv', 17, brca1Dict, brca1seq, 5711,41277486, -1)
